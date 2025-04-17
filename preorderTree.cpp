@@ -61,11 +61,50 @@ void levelOrderTrav(Node*root){
     }
 }
 
+void heightofBT(Node*root){
+    if(root==NULL){
+        cout<<"0"<<endl;
+        return;
+    }
+    int h=0;
+    queue<Node*>q;
+    q.push(root);
+    q.push(NULL);
+    Node*curr;
+    while(!q.empty()){
+        curr = q.front();
+        q.pop();
+        if(curr==NULL){
+            h++;
+            cout<<endl;
+            if(!q.empty())
+                q.push(curr);
+            continue;
+        }
+        // cout<<curr->data<<" ";
+        if(curr->left)
+            q.push(curr->left);
+        if(curr->right)
+            q.push(curr->right);
+    }
+    cout<<"Height:"<<h<<endl;
+    
+}
+
+int heightRec(Node*root){
+    if(root==NULL)
+        return 0;
+    int leftHeight=heightRec(root->left);
+    int rightHeight=heightRec(root->right);
+    return max(leftHeight,rightHeight)+1;
+}
 
 
 int main(){
-    vector<int>v={1,2,4,-1,-1,5,-1,-1,3,-1,6,-1,-1};
+    vector<int>v={1,2,4,-1,-1,5,-1,6,-1,7,-1,-1,3,-1,-1};
     Node * root = preorder(v);
     // preorderTrav(root);
     levelOrderTrav(root);
+    heightofBT(root);
+    cout<<heightRec(root);
 }
