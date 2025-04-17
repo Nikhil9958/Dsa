@@ -46,7 +46,7 @@ void levelOrderTrav(Node*root){
     Node*curr;
     while(!q.empty()){
         curr = q.front();
-        q.pop();~
+        q.pop();
         if(curr==NULL){
             cout<<endl;
             if(!q.empty())
