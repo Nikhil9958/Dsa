@@ -1,0 +1,1 @@
+{"name":"Local: binaryDouble","url":"/Users/nikhil/Desktop/Dsa/binaryDouble.cpp","tests":[{"id":1736178564642,"input":"1 1 3 3 5\n0 1 2 3 4\n\nleft-> even odd    ","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/nikhil/Desktop/Dsa/binaryDouble.cpp","group":"local","local":true}
