@@ -76,7 +76,7 @@ void heightofBT(Node*root){
         q.pop();
         if(curr==NULL){
             h++;
-            cout<<endl;
+            // cout<<endl;
             if(!q.empty())
                 q.push(curr);
             continue;
@@ -106,5 +106,5 @@ int main(){
     // preorderTrav(root);
     levelOrderTrav(root);
     heightofBT(root);
-    cout<<heightRec(root);
+    cout<<"Recursive Height:"<<heightRec(root);
 }
