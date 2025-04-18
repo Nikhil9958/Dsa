@@ -111,7 +111,7 @@ int heightRec(Node *root)
     return max(leftHeight, rightHeight) + 1;
 }
 
-int maxPath(Node *root)
+int maxPath(Node *root) //counting edges
 {
     if (root == NULL)
         return 0;
@@ -122,7 +122,7 @@ int maxPath(Node *root)
     return max(leftHeight, rightHeight) + 1;
 }
 
-int diameterPath(Node*root){
+int diameterPath(Node*root){ //counting diameter taking reference of edge
     if(root==NULL)
         return 0;
     if(root->left==NULL&&root->right==NULL){
@@ -154,12 +154,48 @@ int diameter(Node *root)
     return max(rootDia, max(leftDia, rightDia));
 }
 
+pair<int,int> optimizedDiameter(Node*root){
+    if(root==NULL){
+        return {0,0};
+    }
+    pair<int,int>leftP = optimizedDiameter(root->left);
+    pair<int,int>rightP = optimizedDiameter(root->right);
+    int rootDia = leftP.first + rightP.first + 1;
+    int dia = max(rootDia,max(leftP.second,rightP.second));
+    int height = max(leftP.first,rightP.first)+1;
+    pair<int,int>ans = {height,dia};
+    return ans;
+}
+
+vector<int>ans={};
+vector<int> preorder(Node*root){
+    if(root==NULL){
+        ans.push_back(-1);
+        return ans;
+    }
+    ans.push_back(root->data);
+    preorder(root->left);
+    preorder(root->right);
+    return ans;
+}
+
+bool check2Vectors(vector<int>tree,vector<int>subTree){
+        for(int i=0,j=0;i<tree.size();i++){
+            if(tree[i]==subTree[j]){
+                j++;
+                if(j==subTree.size())
+                    return true;
+            }
+        }
+        return false;
+}
+
 int main()
 {
     // vector<int>v={1,2,4,-1,-1,5,-1,6,-1,7,-1,-1,3,-1,-1};
-    // vector<int>v = {1,2,3,-1,-1,4,-1,-1,5,-1,6,-1,-1};
+    vector<int>v = {4,1,-1,-1,2,-1,-1};
     // vector<int> v = {1, 2, 4, -1, -1, 5, -1, 7, -1, 8, -1, 9, -1, -1, 3, -1, 6, -1, -1};
-    vector<int>v={1,-1,-1};
+    // vector<int>v={1,-1,-1};
     Node *root = preorder(v);
     // preorderTrav(root);
     levelOrderTrav(root);
@@ -168,4 +204,15 @@ int main()
     cout << "diameter:" << diameter(root) << endl;
     cout<< "maxPath:"<<maxPath(root)<<endl;
     cout<<"DiameterPath:"<<diameterPath(root)<<endl;
+    pair<int,int>HeightDiameter = optimizedDiameter(root);
+    cout<<"OptimizedHeight:"<<HeightDiameter.first<<" "<<"OptimizedDia:"<<HeightDiameter.second<<endl;
+    vector<int>buildedTree = preorder(root);
+    // cout<<"Hello"<<endl;
+    // for(int i=0;i<buildedTree.size();i++){
+    //     cout<<buildedTree[i]<<" ";
+    // }
+    // cout<<endl;
+    // vector<int>tree = {3,4, 1, -1, -1, 2, -1, -1,5,-1,-1 };
+    // vector<int>subtree = {4, 1, -1, -1, 2,-1, -1 };
+    // cout<<"Check2Vector:"<<check2Vectors(tree,subtree);
 }
