@@ -190,10 +190,25 @@ bool check2Vectors(vector<int>tree,vector<int>subTree){
         return false;
 }
 
+void horizontalDist(Node*root,int level, map<int,Node*>&mp){
+    if(root==NULL)
+        return;
+    if(mp.count(level)==0){
+        mp[level] = root;
+    }
+    horizontalDist(root->left,level-1,mp);
+    horizontalDist(root->right,level+1,mp);
+
+    return;
+
+}
+
+
 int main()
 {
     // vector<int>v={1,2,4,-1,-1,5,-1,6,-1,7,-1,-1,3,-1,-1};
-    vector<int>v = {4,1,-1,-1,2,-1,-1};
+    vector<int>v = {1,2,3,-1,-1,4,-1,-1,5,-1,6,-1,-1};
+    // vector<int>v = {4,1,-1,-1,2,-1,-1};
     // vector<int> v = {1, 2, 4, -1, -1, 5, -1, 7, -1, 8, -1, 9, -1, -1, 3, -1, 6, -1, -1};
     // vector<int>v={1,-1,-1};
     Node *root = preorder(v);
@@ -215,4 +230,10 @@ int main()
     // vector<int>tree = {3,4, 1, -1, -1, 2, -1, -1,5,-1,-1 };
     // vector<int>subtree = {4, 1, -1, -1, 2,-1, -1 };
     // cout<<"Check2Vector:"<<check2Vectors(tree,subtree);
+
+    map<int,Node*>mp;
+    horizontalDist(root,0,mp);
+    for(auto it:mp){
+        cout<<it.first<<" "<<it.second->data<<endl;
+    }
 }
