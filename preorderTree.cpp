@@ -246,13 +246,56 @@ void kthLevelRec(Node*root,int level){
     kthLevelRec(root->right,level-1);
     return;
 }
+
+
+
+
+void pathFinder(Node*root,Node*n,vector<int>&p){
+    if(root==NULL||n==NULL)
+        return;
+    if(root->data==n->data){
+        p.push_back(root->data);
+        return;
+    }
+    pathFinder(root->left,n,p);
+    if(p.size()!=0){
+        p.push_back(root->data);
+        return;
+    }
+    pathFinder(root->right,n,p);
+    if(p.size()!=0){
+        p.push_back(root->data);
+        return;
+    }
+}
+
+void LCA(Node*root,Node*n1,Node*n2,vector<int>p1,vector<int>p2){
+    if(root==NULL)
+        return;
+    pathFinder(root,n1,p1);
+    pathFinder(root,n2,p2);
+    int i=1,j=1;
+    for(;i<p1.size()&&j<p2.size();i++){
+        if(p1[i]==p2[j]){
+            cout<<"LCA:"<<p1[i]<<endl;
+            break;
+        }
+        if(i==p1.size()-1){
+            i=0;
+            j++;
+        }
+    }
+
+
+}
+
 int main()
 {
     // vector<int>v={1,2,4,-1,-1,5,-1,6,-1,7,-1,-1,3,-1,-1};
     // vector<int>v = {1,2,3,-1,-1,4,-1,-1,5,-1,6,-1,-1};
-    vector<int>v = {1,2,-1,4,-1,-1,3,-1,-1};
+    // vector<int>v = {1,2,-1,4,-1,-1,3,-1,-1};
     // vector<int>v = {4,1,-1,-1,2,-1,-1};
-    // vector<int> v = {1, 2, 4, -1, -1, 5, -1, 7, -1, 8, -1, 9, -1, -1, 3, -1, 6, -1, -1};
+    vector<int> v = {1, 2, 4, -1, -1, 5, -1, 7, -1, 8, -1, 9, -1, -1, 3, -1, 6, -1, -1};
     // vector<int>v={1,-1,-1};
     Node *root = preorder(v);
     // preorderTrav(root);
@@ -279,7 +322,17 @@ int main()
     // for(auto it:mp){
     //     cout<<it.first<<" "<<it.second->data<<endl;
     // }
-    kthLevel(root,2);
-    kthLevelRec(root,3);
+    // kthLevel(root,2);
+    // kthLevelRec(root,3);
+
+    vector<int>p1;
+    vector<int>p2;
+    // pathFinder(root,root->left->right,p);
+    // cout<<"Path:";
+    // for(int i=0;i<p.size();i++){
+    //     cout<<p[i]<<" ";
+    // }
+    LCA(root,root->left->left,root->left->right->right->right->right,p1,p2);
+    cout<<root->left->right->right->right->right->data;
 
 }
