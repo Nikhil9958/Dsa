@@ -203,11 +203,54 @@ void horizontalDist(Node*root,int level, map<int,Node*>&mp){
 
 }
 
+void kthLevel(Node*root,int level){
+    if(root==NULL)
+        return;
+    queue<Node*>q;
+    q.push(root);
+    q.push(NULL);
+    Node*curr;
+    int tempLevel = 1;
+    cout<<"kth level:";
+    while(!q.empty()){
+        curr = q.front();
+        q.pop();
+        
+        if(curr==NULL){
+            tempLevel++;
+            if(!q.empty())
+                q.push(NULL);
+            continue;
+        }
+        if(tempLevel==level){
+            cout<<curr->data<<" ";
+        }
+        if(tempLevel>level)
+            break;
+        if(curr->left)
+            q.push(curr->left);
+        if(curr->right)
+            q.push(curr->right);
+        
+    }
+    cout<<endl;
+}
 
+void kthLevelRec(Node*root,int level){
+    if(root==NULL||level<1)
+        return;
+    if(level==1){
+        cout<<root->data<<" ";
+    }
+    kthLevelRec(root->left,level-1);
+    kthLevelRec(root->right,level-1);
+    return;
+}
 int main()
 {
     // vector<int>v={1,2,4,-1,-1,5,-1,6,-1,7,-1,-1,3,-1,-1};
-    vector<int>v = {1,2,3,-1,-1,4,-1,-1,5,-1,6,-1,-1};
+    // vector<int>v = {1,2,3,-1,-1,4,-1,-1,5,-1,6,-1,-1};
+    vector<int>v = {1,2,-1,4,-1,-1,3,-1,-1};
     // vector<int>v = {4,1,-1,-1,2,-1,-1};
     // vector<int> v = {1, 2, 4, -1, -1, 5, -1, 7, -1, 8, -1, 9, -1, -1, 3, -1, 6, -1, -1};
     // vector<int>v={1,-1,-1};
@@ -231,9 +274,12 @@ int main()
     // vector<int>subtree = {4, 1, -1, -1, 2,-1, -1 };
     // cout<<"Check2Vector:"<<check2Vectors(tree,subtree);
 
-    map<int,Node*>mp;
-    horizontalDist(root,0,mp);
-    for(auto it:mp){
-        cout<<it.first<<" "<<it.second->data<<endl;
-    }
+    // map<int,Node*>mp;
+    // horizontalDist(root,0,mp);
+    // for(auto it:mp){
+    //     cout<<it.first<<" "<<it.second->data<<endl;
+    // }
+    kthLevel(root,2);
+    kthLevelRec(root,3);
+
 }
