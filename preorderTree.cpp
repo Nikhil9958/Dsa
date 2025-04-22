@@ -274,14 +274,14 @@ void LCA(Node*root,Node*n1,Node*n2,vector<int>p1,vector<int>p2){
         return;
     pathFinder(root,n1,p1);
     pathFinder(root,n2,p2);
-    int i=1,j=1;
+    int i=0,j=0;
     for(;i<p1.size()&&j<p2.size();i++){
         if(p1[i]==p2[j]){
             cout<<"LCA:"<<p1[i]<<endl;
             break;
         }
         if(i==p1.size()-1){
-            i=0;
+            i=-1;
             j++;
         }
     }
@@ -303,49 +303,19 @@ Node*findNode(Node*root,Node*n){
 Node*LCA2(Node*root,Node*n1,Node*n2){
     if(root==NULL)
         return NULL;
-    if(root==n1){
-        Node*left = findNode(root->left,n2);
-        if(left)
-            return root;
-        Node*right = findNode(root->right,n2);
-        if(right)
-            return root;
-        if(!left && !right){
-            return NULL;
-        }
-    }
-    if(root==n2){
-        Node*left = findNode(root->left,n1);
-        if(left)
-            return root;
-        Node*right = findNode(root->right,n1);
-        if(right)
-            return root;
-        if(!left && !right){
-            return NULL;
-        }
-    }
-    Node*left = findNode(root->left,n1);
-    Node*right=NULL;
-    if(left)
-        right = findNode(root->right,n2);
-    if(right)
+    if(root==n1||root==n2 ){
         return root;
-
-    left = findNode(root->left,n2);
-    right=NULL;
-    if(left)
-        right = findNode(root->right,n1);
-    if(right)
+    }
+    Node*left = LCA2(root->left,n1,n2);
+    Node*right = LCA2(root->right,n1,n2);
+    if(left&&right)
         return root;
-
-    left=LCA2(root->left,n1,n2);
-    if(left)
+    if(!left &&right)
+        return right;
+    if(!right&&left)
         return left;
-    right = LCA2(root->right,n1,n2);
-    return right;
-    
-    
+    return NULL;
+
 }
 
 int main()
@@ -391,8 +361,8 @@ int main()
     // for(int i=0;i<p.size();i++){
     //     cout<<p[i]<<" ";
     // }
-    LCA(root,root,root->left->right->right->right->right,p1,p2);
-    cout<<"LCA2:"<<LCA2(root,root,root->left->right)->data;
+    LCA(root,root->left->left,root->left->right,p1,p2);
+    cout<<"LCA2:"<<LCA2(root,root->left->left,root->left->right)->data;
     // cout<<root->left->right->right->right->right->data;
 
 }
