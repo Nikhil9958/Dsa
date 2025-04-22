@@ -285,8 +285,67 @@ void LCA(Node*root,Node*n1,Node*n2,vector<int>p1,vector<int>p2){
             j++;
         }
     }
+}
 
+Node*findNode(Node*root,Node*n){
+    if(root==NULL)
+        return NULL;
+    if(root==n)
+        return root;
+    Node*left = findNode(root->left,n);
+    if(left)
+        return left;
+    Node*right = findNode(root->right,n);
+    return right;
+    
+}
 
+Node*LCA2(Node*root,Node*n1,Node*n2){
+    if(root==NULL)
+        return NULL;
+    if(root==n1){
+        Node*left = findNode(root->left,n2);
+        if(left)
+            return root;
+        Node*right = findNode(root->right,n2);
+        if(right)
+            return root;
+        if(!left && !right){
+            return NULL;
+        }
+    }
+    if(root==n2){
+        Node*left = findNode(root->left,n1);
+        if(left)
+            return root;
+        Node*right = findNode(root->right,n1);
+        if(right)
+            return root;
+        if(!left && !right){
+            return NULL;
+        }
+    }
+    Node*left = findNode(root->left,n1);
+    Node*right=NULL;
+    if(left)
+        right = findNode(root->right,n2);
+    if(right)
+        return root;
+
+    left = findNode(root->left,n2);
+    right=NULL;
+    if(left)
+        right = findNode(root->right,n1);
+    if(right)
+        return root;
+
+    left=LCA2(root->left,n1,n2);
+    if(left)
+        return left;
+    right = LCA2(root->right,n1,n2);
+    return right;
+    
+    
 }
 
 int main()
@@ -332,7 +391,8 @@ int main()
     // for(int i=0;i<p.size();i++){
     //     cout<<p[i]<<" ";
     // }
-    LCA(root,root->left->left,root->left->right->right->right->right,p1,p2);
-    cout<<root->left->right->right->right->right->data;
+    LCA(root,root,root->left->right->right->right->right,p1,p2);
+    cout<<"LCA2:"<<LCA2(root,root,root->left->right)->data;
+    // cout<<root->left->right->right->right->right->data;
 
 }
