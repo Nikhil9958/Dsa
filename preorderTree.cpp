@@ -247,9 +247,6 @@ void kthLevelRec(Node*root,int level){
     return;
 }
 
-
-
-
 void pathFinder(Node*root,Node*n,vector<int>&p){
     if(root==NULL||n==NULL)
         return;
@@ -318,14 +315,42 @@ Node*LCA2(Node*root,Node*n1,Node*n2){
 
 }
 
+int getKthAncestor(Node*root,Node*temp,int k){
+    if(root==NULL||k<0)
+        return -1;
+    if(root==temp&&k==0)
+        return root->data;
+    vector<int>p;
+    pathFinder(root,temp,p);
+    if(k>=p.size())
+        return -1;
+    return p[k];
+    
+}
+int getKthAncestorRec(Node*root,Node*temp,int k){
+    if(root==NULL)
+        return -1;
+    if(root==temp)
+        return 0;
+    int leftDist = getKthAncestorRec(root->left,temp,k);
+    int rightDist = getKthAncestorRec(root->right,temp,k);
+    if(leftDist==-1 &&rightDist == -1)
+        return -1;
+    int validVal = leftDist==-1?rightDist:leftDist;
+    if(validVal+1==k)
+        cout<<"Kth Ancestor:"<<root->data;
+    return validVal+1;
+}
+
 int main()
 {
     // vector<int>v={1,2,4,-1,-1,5,-1,6,-1,7,-1,-1,3,-1,-1};
     // vector<int>v = {1,2,3,-1,-1,4,-1,-1,5,-1,6,-1,-1};
     // vector<int>v = {1,2,-1,4,-1,-1,3,-1,-1};
     // vector<int>v = {4,1,-1,-1,2,-1,-1};
-    vector<int> v = {1, 2, 4, -1, -1, 5, -1, 7, -1, 8, -1, 9, -1, -1, 3, -1, 6, -1, -1};
+    // vector<int> v = {1, 2, 4, -1, -1, 5, -1, 7, -1, 8, -1, 9, -1, -1, 3, -1, 6, -1, -1};
     // vector<int>v={1,-1,-1};
+    vector<int>v={0,1,3,-1,-1,4,-1,-1,2,5,-1,-1,6,-1,-1};
     Node *root = preorder(v);
     // preorderTrav(root);
     levelOrderTrav(root);
@@ -354,15 +379,19 @@ int main()
     // kthLevel(root,2);
     // kthLevelRec(root,3);
 
-    vector<int>p1;
-    vector<int>p2;
+    // vector<int>p1;
+    // vector<int>p2;
     // pathFinder(root,root->left->right,p);
     // cout<<"Path:";
     // for(int i=0;i<p.size();i++){
     //     cout<<p[i]<<" ";
-    // }
-    LCA(root,root->left->left,root->left->right,p1,p2);
-    cout<<"LCA2:"<<LCA2(root,root->left->left,root->left->right)->data;
+    // // }
+    // LCA(root,root->left->left,root->left->right,p1,p2);
+    // cout<<"LCA2:"<<LCA2(root,root->left->left,root->left->right)->data;
     // cout<<root->left->right->right->right->right->data;
+    cout<<getKthAncestor(root,root->right->left,2);
+    cout<<getKthAncestorRec(root,root->right->left,2);
+
+
 
 }
